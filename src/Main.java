@@ -1,6 +1,8 @@
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,84 +11,92 @@ public class Main {
         int maxVal = 500000;
         int minVal = 0;
 
-        //make sorters
-        InsertionSorter<Integer> is = new InsertionSorter<Integer>();
-        QuickSorter<Integer> qs = new QuickSorter<Integer>();
-        MergeSorter<Integer> ms = new MergeSorter<Integer>();
+        //file writer
+        try {
+            FileWriter writer = new FileWriter("sorting_results.csv", true);
+
+            //make sorters
+            InsertionSorter<Integer> is = new InsertionSorter<Integer>();
+            QuickSorter<Integer> qs = new QuickSorter<Integer>();
+            MergeSorter<Integer> ms = new MergeSorter<Integer>();
 
 
-        //SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new InsertionSorter<Integer>());
+            //SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new InsertionSorter<Integer>());
 
-        //make the lists that will be used
-        SorterList<Integer, ISorter<Integer>> insertList = new SorterList<>(is);
-        SorterList<Integer, ISorter<Integer>> semiSortedInsert = new SorterList<>(is);
-        SorterList<Integer, ISorter<Integer>> semiSortedQuick = new SorterList<>(qs);
-        SorterList<Integer, ISorter<Integer>> quickList = new SorterList<>(qs);
-        SorterList<Integer, ISorter<Integer>> mergeList = new SorterList<>(ms);
-        SorterList<Integer, ISorter<Integer>> semiSortedMerge = new SorterList<>(ms);
+            //make the lists that will be used
+            SorterList<Integer, ISorter<Integer>> insertList = new SorterList<>(is);
+            SorterList<Integer, ISorter<Integer>> semiSortedInsert = new SorterList<>(is);
+            SorterList<Integer, ISorter<Integer>> semiSortedQuick = new SorterList<>(qs);
+            SorterList<Integer, ISorter<Integer>> quickList = new SorterList<>(qs);
+            SorterList<Integer, ISorter<Integer>> mergeList = new SorterList<>(ms);
+            SorterList<Integer, ISorter<Integer>> semiSortedMerge = new SorterList<>(ms);
 
-        //prep for 20k
-        populateLists(insertList, quickList, mergeList, rand, 20000, maxVal, minVal);
-        loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 20000);
+            //prep for 20k
+            populateLists(insertList, quickList, mergeList, rand, 20000, maxVal, minVal);
+            loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 20000);
 
-        //sort 20k
-        sortLists(insertList, mergeList, quickList, 20000, is, qs, ms, "random");
-        sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 20000, is, qs, ms, "semi-sorted");
-        sortLists(insertList, mergeList, quickList, 20000, is, qs, ms, "sorted");
+            //sort 20k
+            sortLists(insertList, mergeList, quickList, 20000, is, qs, ms, "random", writer);
+            sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 20000, is, qs, ms, "semi-sorted", writer);
+            sortLists(insertList, mergeList, quickList, 20000, is, qs, ms, "sorted", writer);
 
-        //clear 20k
-        clearLists(insertList, mergeList, quickList);
-        clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
+            //clear 20k
+            clearLists(insertList, mergeList, quickList);
+            clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
 
-        //prep for 40k
-        populateLists(insertList, quickList, mergeList, rand, 40000, maxVal, minVal);
-        loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 40000);
+            //prep for 40k
+            populateLists(insertList, quickList, mergeList, rand, 40000, maxVal, minVal);
+            loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 40000);
 
-        //sort 40k
-        sortLists(insertList, mergeList, quickList, 40000, is, qs, ms, "random");
-        sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 40000, is, qs, ms, "semi-sorted");
-        sortLists(insertList, mergeList, quickList, 40000, is, qs, ms, "sorted");
+            //sort 40k
+            sortLists(insertList, mergeList, quickList, 40000, is, qs, ms, "random", writer);
+            sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 40000, is, qs, ms, "semi-sorted", writer);
+            sortLists(insertList, mergeList, quickList, 40000, is, qs, ms, "sorted", writer);
 
-        //clear 40k
-        clearLists(insertList, mergeList, quickList);
-        clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
+            //clear 40k
+            clearLists(insertList, mergeList, quickList);
+            clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
 
-        //prep for 60k
-        populateLists(insertList, quickList, mergeList, rand, 60000, maxVal, minVal);
-        loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 60000);
+            //prep for 60k
+            populateLists(insertList, quickList, mergeList, rand, 60000, maxVal, minVal);
+            loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 60000);
 
-        //sort 60k
-        sortLists(insertList, mergeList, quickList, 60000, is, qs, ms, "random");
-        sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 60000, is, qs, ms, "semi-sorted");
-        sortLists(insertList, mergeList, quickList, 60000, is, qs, ms, "sorted");
+            //sort 60k
+            sortLists(insertList, mergeList, quickList, 60000, is, qs, ms, "random", writer);
+            sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 60000, is, qs, ms, "semi-sorted", writer);
+            sortLists(insertList, mergeList, quickList, 60000, is, qs, ms, "sorted", writer);
 
-        //clear 60k
-        clearLists(insertList, mergeList, quickList);
-        clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
+            //clear 60k
+            clearLists(insertList, mergeList, quickList);
+            clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
 
-        //prep for 80k
-        populateLists(insertList, quickList, mergeList, rand, 80000, maxVal, minVal);
-        loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 80000);
+            //prep for 80k
+            populateLists(insertList, quickList, mergeList, rand, 80000, maxVal, minVal);
+            loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 80000);
 
-        //sort 80k
-        sortLists(insertList, mergeList, quickList, 80000, is, qs, ms, "random");
-        sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 80000, is, qs, ms, "semi-sorted");
-        sortLists(insertList, mergeList, quickList, 80000, is, qs, ms, "sorted");
+            //sort 80k
+            sortLists(insertList, mergeList, quickList, 80000, is, qs, ms, "random", writer);
+            sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 80000, is, qs, ms, "semi-sorted", writer);
+            sortLists(insertList, mergeList, quickList, 80000, is, qs, ms, "sorted", writer);
 
-        //clear 80k
-        clearLists(insertList, mergeList, quickList);
-        clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
+            //clear 80k
+            clearLists(insertList, mergeList, quickList);
+            clearLists(semiSortedInsert, semiSortedMerge, semiSortedQuick);
 
-        //prep for 100k
-        populateLists(insertList, quickList, mergeList, rand, 100000, maxVal, minVal);
-        loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 100000);
+            //prep for 100k
+            populateLists(insertList, quickList, mergeList, rand, 100000, maxVal, minVal);
+            loadSemiSortedData(semiSortedInsert, semiSortedQuick, semiSortedMerge, 100000);
 
-        //sort 100k
-        sortLists(insertList, mergeList, quickList, 100000, is, qs, ms, "random");
-        sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 100000, is, qs, ms, "semi-sorted");
-        sortLists(insertList, mergeList, quickList, 100000, is, qs, ms, "sorted");
+            //sort 100k
+            sortLists(insertList, mergeList, quickList, 100000, is, qs, ms, "random", writer);
+            sortLists(semiSortedInsert, semiSortedMerge, semiSortedQuick, 100000, is, qs, ms, "semi-sorted", writer);
+            sortLists(insertList, mergeList, quickList, 100000, is, qs, ms, "sorted", writer);
 
-        System.out.println("All sorts have finished...\nGoodbye!");
+            System.out.println("All sorts have finished...\nGoodbye!");
+            writer.close();
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+        }
     }
 
     public static void clearLists(SorterList<Integer, ISorter<Integer>> insertList,
@@ -108,35 +118,52 @@ public class Main {
             quickList.add(randomNumber);
             mergeList.add(randomNumber);
         }
+
     }
 
     public static void sortLists(SorterList<Integer, ISorter<Integer>> insertList,
                                  SorterList<Integer, ISorter<Integer>> mergeList,
                                  SorterList<Integer, ISorter<Integer>> quickList,
                                  int collectionSize, InsertionSorter is, QuickSorter qs, MergeSorter ms,
-                                 String dataType){
+                                 String dataType, FileWriter writer){
+        try {
+            System.out.println("Starting insertion sort on " + collectionSize + " " + dataType + " collection...");
+            long start = System.currentTimeMillis();
+            insertList.sort();
+            long end = System.currentTimeMillis();
+            NumberFormat format = new DecimalFormat("#0.00000");
+            System.out.println("Execution time for " + collectionSize + " " + dataType + " insertion sort is: "
+                    + format.format((end - start) / 1000d) + " seconds with " + insertList.getOpCount() +" operations");
 
-        System.out.println("Starting insertion sort on " + collectionSize + " " + dataType + " collection...");
-        long start = System.currentTimeMillis();
-        insertList.sort();
-        long end = System.currentTimeMillis();
-        NumberFormat format = new DecimalFormat("#0.00000");
-        System.out.println("Execution time for " + collectionSize + " " + dataType + " insertion sort is: "
-                + format.format((end - start) / 1000d) + " seconds with " + insertList.getOpCount() +" operations");
+            //write results to the file
+            writer.append(Integer.toString(collectionSize) + "," + dataType + ",insertion," +
+                    format.format((end - start) / 1000) + "," + Long.toString(insertList.getOpCount()) + "\n");
 
-        System.out.println("\nStarting merge sort on " + collectionSize + " " + dataType + " collection...");
-        start = System.currentTimeMillis();
-        mergeList.sort();
-        end = System.currentTimeMillis();
-        System.out.println("Execution time for " + collectionSize + " " + dataType + " element merge sort is: "
-                + format.format((end - start) / 1000d) + " seconds with " + mergeList.getOpCount() + " operations");
+            System.out.println("\nStarting merge sort on " + collectionSize + " " + dataType + " collection...");
+            start = System.currentTimeMillis();
+            mergeList.sort();
+            end = System.currentTimeMillis();
+            System.out.println("Execution time for " + collectionSize + " " + dataType + " element merge sort is: "
+                    + format.format((end - start) / 1000d) + " seconds with " + mergeList.getOpCount() + " operations");
 
-        System.out.println("\nStarting quick sort on " + collectionSize + " " + dataType + " collection...");
-        start = System.currentTimeMillis();
-        quickList.sort();
-        end = System.currentTimeMillis();
-        System.out.println("Execution time for " + collectionSize + " " + dataType + " quick sort is: "
-                + format.format((end - start) / 1000d) + " seconds with " + quickList.getOpCount() + " operations\n");
+            //write results to the file
+            writer.append(Integer.toString(collectionSize) + "," + dataType + ",merge," +
+                    format.format((end - start) / 1000) + "," + Long.toString(mergeList.getOpCount()) + "\n");
+
+            System.out.println("\nStarting quick sort on " + collectionSize + " " + dataType + " collection...");
+            start = System.currentTimeMillis();
+            quickList.sort();
+            end = System.currentTimeMillis();
+            System.out.println("Execution time for " + collectionSize + " " + dataType + " quick sort is: "
+                    + format.format((end - start) / 1000d) + " seconds with " + quickList.getOpCount() + " operations\n");
+
+            //write results to the file
+            writer.append(Integer.toString(collectionSize) + "," + dataType + ",quick," +
+                    format.format((end - start) / 1000) + "," + Long.toString(quickList.getOpCount()) + "\n");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
     }
 
     public static void loadSemiSortedData(SorterList<Integer, ISorter<Integer>> semiSortedInsert,
