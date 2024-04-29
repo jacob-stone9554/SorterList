@@ -59,4 +59,8 @@ public class SorterList<T extends Comparable<T>, T2 extends ISorter<T>> {
     public void clear() {
         list.clear();
     }
+
+    public long getOpCount() {
+        return sorter.getOperationCount();
+    }
 }

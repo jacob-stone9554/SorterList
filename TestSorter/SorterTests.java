@@ -6,65 +6,121 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * SorterTests runs tests against my sorter implementations
- */
 public class SorterTests {
 
     @Test
+    void testAdd() {
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new InsertionSorter<Integer>());
+        sorterList.add(5);
+        sorterList.add(3);
+        sorterList.add(8);
+
+        List<Integer> list = sorterList.getList();
+        Assertions.assertEquals(3, list.size());
+        Assertions.assertEquals(5, list.get(0));
+        Assertions.assertEquals(3, list.get(1));
+        Assertions.assertEquals(8, list.get(2));
+    }
+
+    @Test
+    void testSort() {
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new MergeSorter<Integer>());
+        sorterList.add(5);
+        sorterList.add(3);
+        sorterList.add(8);
+
+        List<Integer> sortedList = sorterList.sort();
+        Assertions.assertEquals(3, sortedList.size());
+        Assertions.assertEquals(3, sortedList.get(0));
+        Assertions.assertEquals(5, sortedList.get(1));
+        Assertions.assertEquals(8, sortedList.get(2));
+    }
+
+    @Test
+    void testClear() {
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new QuickSorter<Integer>());
+        sorterList.add(5);
+        sorterList.add(3);
+        sorterList.add(8);
+
+        sorterList.clear();
+        List<Integer> list = sorterList.getList();
+        Assertions.assertTrue(list.isEmpty());
+    }
+
+    @Test
+    void testEmptyListSort() {
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new QuickSorter<Integer>());
+
+        Assertions.assertThrows(IllegalArgumentException.class, sorterList::sort);
+    }
+
+    @Test
     void testQuickSort() {
-        QuickSorter sorter = new QuickSorter();
-        List<Integer> unsortedList = new ArrayList<>(Arrays.asList(5, 3, 8, 1, 2, 7, 4));
-        List<Integer> sortedList = sorter.sortArray(unsortedList);
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new QuickSorter<Integer>());
+        sorterList.add(5);
+        sorterList.add(3);
+        sorterList.add(8);
+        sorterList.add(1);
+        sorterList.add(2);
+        sorterList.add(7);
+        sorterList.add(4);
+
+        List<Integer> sortedList = sorterList.sort();
         List<Integer> expectedList = Arrays.asList(1, 2, 3, 4, 5, 7, 8);
         Assertions.assertEquals(expectedList, sortedList);
     }
 
     @Test
     void testMergeSort() {
-        MergeSorter sorter = new MergeSorter();
-        List<Integer> unsortedList = new ArrayList<>(Arrays.asList(5, 3, 8, 1, 2, 7, 4));
-        List<Integer> sortedList = sorter.sortArray(unsortedList);
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new MergeSorter<Integer>());
+        sorterList.add(5);
+        sorterList.add(3);
+        sorterList.add(8);
+        sorterList.add(1);
+        sorterList.add(2);
+        sorterList.add(7);
+        sorterList.add(4);
+
+        List<Integer> sortedList = sorterList.sort();
         List<Integer> expectedList = Arrays.asList(1, 2, 3, 4, 5, 7, 8);
         Assertions.assertEquals(expectedList, sortedList);
     }
 
     @Test
     void testInsertionSort() {
-        InsertionSorter sorter = new InsertionSorter();
-        List<Integer> unsortedList = new ArrayList<>(Arrays.asList(5, 3, 8, 1, 2, 7, 4));
-        List<Integer> sortedList = sorter.sortArray(unsortedList);
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new InsertionSorter<Integer>());
+        sorterList.add(5);
+        sorterList.add(3);
+        sorterList.add(8);
+        sorterList.add(1);
+        sorterList.add(2);
+        sorterList.add(7);
+        sorterList.add(4);
+
+        List<Integer> sortedList = sorterList.sort();
         List<Integer> expectedList = Arrays.asList(1, 2, 3, 4, 5, 7, 8);
         Assertions.assertEquals(expectedList, sortedList);
     }
 
     @Test
     void testEmptyListQuickSort() {
-        QuickSorter sorter = new QuickSorter();
-        List<Integer> emptyList = Collections.emptyList();
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new QuickSorter<Integer>());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            sorter.sortArray(emptyList);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, sorterList::sort);
     }
 
     @Test
     void testEmptyListMergeSort() {
-        MergeSorter sorter = new MergeSorter();
-        List<Integer> emptyList = Collections.emptyList();
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new MergeSorter<Integer>());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            sorter.sortArray(emptyList);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, sorterList::sort);
     }
 
     @Test
     void testEmptyListInsertionSort() {
-        InsertionSorter sorter = new InsertionSorter();
-        List<Integer> emptyList = Collections.emptyList();
+        SorterList<Integer, ISorter<Integer>> sorterList = new SorterList<>(new InsertionSorter<Integer>());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            sorter.sortArray(emptyList);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, sorterList::sort);
     }
 }

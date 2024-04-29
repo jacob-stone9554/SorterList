@@ -1,18 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Implementation of the Quick Sort algorithm for sorting lists of elements of type T.
- * This class implements the Sorter interface.
- * @author Jacob Stone
- * @param <T> the type of elements to be sorted, must implement Comparable
- */
 public class QuickSorter<T extends Comparable<T>> implements ISorter<T> {
+    private long operationCount; // Counter for operations
 
     /**
      * Default constructor for the QuickSorter class.
      */
     public QuickSorter() {
+        operationCount = 0; // Initialize operation count
     }
 
     /**
@@ -33,7 +29,7 @@ public class QuickSorter<T extends Comparable<T>> implements ISorter<T> {
     }
 
     /**
-     * Swaps two elements in an array.
+     * Swaps two elements in an array and increments the operation count.
      *
      * @param array the array in which elements are to be swapped
      * @param i     the index of the first element
@@ -43,6 +39,7 @@ public class QuickSorter<T extends Comparable<T>> implements ISorter<T> {
         T temp = array[i];
         array[i] = array[j];
         array[j] = temp;
+        operationCount++; // Increment operation count for each swap
     }
 
     /**
@@ -61,10 +58,12 @@ public class QuickSorter<T extends Comparable<T>> implements ISorter<T> {
         while (true) {
             do {
                 i++;
+                operationCount++; // Increment operation count for each comparison
             } while (array[i].compareTo(pivot) < 0);
 
             do {
                 j--;
+                operationCount++; // Increment operation count for each comparison
             } while (array[j].compareTo(pivot) > 0);
 
             if (i >= j) {
@@ -114,5 +113,9 @@ public class QuickSorter<T extends Comparable<T>> implements ISorter<T> {
             result.add(element);
         }
         return result;
+    }
+
+    public long getOperationCount() {
+        return operationCount;
     }
 }
